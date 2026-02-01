@@ -33,7 +33,7 @@ server:
 # APP + Actuator = same PORT
 management:
   server:
-    port: ${API_PORT}
+    port: ${ACTUATOR_PORT}
 
 
 # ...
