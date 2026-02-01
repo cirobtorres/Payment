@@ -15,9 +15,7 @@ WORKDIR /app
 COPY --from=build /build/target/*.jar ./app.jar
 
 EXPOSE 8080
-
-# Actuator
-#EXPOSE 9090
+EXPOSE 9090
 
 ENV PROFILE_ACTIVE='production'
 ENV TZ='America/Sao_Paulo'
