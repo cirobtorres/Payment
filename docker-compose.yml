@@ -1,0 +1,54 @@
+services:
+  payment-api:
+    build: ./payment-api
+    container_name: payment-api
+    ports:
+      - "8080:8080"
+    env_file:
+      - ./payment-api/.env
+    depends_on:
+      - payment-db
+    networks:
+      - payment-network
+
+  payment-web:
+    build: ./payment-web
+    container_name: payment-web
+    restart: unless-stopped
+    env_file:
+      - ./payment-web/.env
+    ports:
+      - "3000:3000"
+    networks:
+      - payment-network
+
+  payment-db:
+    image: postgres:17-alpine
+    container_name: payment-db
+    env_file:
+      - ./payment-api/.env
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - payment-network
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pg-admin
+    env_file:
+      - ./payment-api/.env
+    ports:
+      - "5050:80"
+    depends_on:
+      - payment-db
+    networks:
+      - payment-network
+
+networks:
+  payment-network:
+    driver: bridge
+
+volumes:
+  pgdata:
